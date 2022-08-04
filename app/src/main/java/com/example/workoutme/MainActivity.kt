@@ -4,15 +4,30 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.Toast
+import com.example.workoutme.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+
+    //Create a variable for finding with respactive Activity Binding
+    private var binding: ActivityMainBinding? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        val flStartBtn: FrameLayout = findViewById(R.id.startFL)
-        flStartBtn.setOnClickListener {
+        //inflate the ActivityMainBinding into binding variable
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        //set the content view with the root of the binding layout
+        setContentView(binding?.root)
+
+        binding?.startFL?.setOnClickListener {
             Toast.makeText(this, "Start the Workout", Toast.LENGTH_LONG).show()
         }
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        binding = null
     }
 }
