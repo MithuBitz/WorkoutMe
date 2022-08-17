@@ -70,6 +70,60 @@
 
     </FrameLayout>
 
+    <TextView
+        android:id="@+id/simpleTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/nestExe"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressBarFL"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/nextExerciseTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/simpleTV"
+        app:layout_constraintStart_toStartOf="@+id/simpleTV"
+        app:layout_constraintTop_toBottomOf="@+id/simpleTV"
+        tools:text="Exercise Name"
+        tools:visibility="visible" />
+
+
+    <ImageView
+        android:id="@+id/imageIV"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_plank"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@id/exerciseTV"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarExercise"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <TextView
+        android:id="@+id/exerciseTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Exercise Name"
+        android:textColor="@color/colorAccent"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageIV"
+        tools:visibility="visible" />
+
     <FrameLayout
         android:id="@+id/exerciseViewFL"
         android:layout_width="100dp"
@@ -80,7 +134,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarExercise">
+        app:layout_constraintTop_toBottomOf="@+id/exerciseTV">
 
         <ProgressBar
             android:id="@+id/exerciseProgressBar"
