@@ -1,19 +1,31 @@
 package com.example.workoutme
 
+import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.speech.tts.TextToSpeech
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.workoutme.databinding.ActivityExerciseBinding
+import org.w3c.dom.Text
+import java.util.*
+import kotlin.collections.ArrayList
 
-class ExerciseActivity : AppCompatActivity() {
+class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     private var binding: ActivityExerciseBinding? = null
     private var restTimer: CountDownTimer? = null
     private var exerciseTimer: CountDownTimer? = null
     private var restProgress = 0
     private var exerciseProgress = 0
+
+    //Create a variable for the TextToSpeech object
+    private var tts: TextToSpeech? = null
+    //Create a variable for MediaPlayer
+    private var player: MediaPlayer? = null
 
     //Intialize exercise List with the Exercise Model
     private var exerciseList: ArrayList<ExerciseModel>? = null
@@ -34,6 +46,9 @@ class ExerciseActivity : AppCompatActivity() {
         // set the Exercise arrayList Constant object exercise list function
         exerciseList = Constants.defaultExercise()
 
+        //Initialize the TTS
+        tts = TextToSpeech(this, this)
+
         binding?.toolbarExercise?.setNavigationOnClickListener {
             onBackPressed()
         }
@@ -42,6 +57,22 @@ class ExerciseActivity : AppCompatActivity() {
     }
 
     private fun setRestView(){
+
+        //set the MediaPlayer sound here so that when rest view appear it will play
+        //Try block
+        try {
+            //Create a variable for soundUri to parse the music file from the location
+            val soundUri = Uri.parse("android.resource://com.example.workoutme/" + R.raw.start)
+            //Create the MediaPlayer with application context and uri argument
+            player = MediaPlayer.create(applicationContext, soundUri)
+            //set the isLooping to false
+            player?.isLooping = false
+            //set the player to start
+            player?.start()
+        } catch (e: Exception) {
+            //Catch block with printStack
+            e.printStackTrace()
+        }
 
         binding?.titleTV?.visibility = View.VISIBLE
         binding?.progressBarFL?.visibility = View.VISIBLE
@@ -55,6 +86,8 @@ class ExerciseActivity : AppCompatActivity() {
             restTimer?.cancel()
             restProgress = 0
         }
+
+        speakOut("Take a rest")
 
         binding?.nextExerciseTV?.text = exerciseList!![currentExercisePostion + 1].getName()
 
@@ -75,6 +108,9 @@ class ExerciseActivity : AppCompatActivity() {
             exerciseTimer?.cancel()
             exerciseProgress = 0
         }
+
+        //Speak the exercise name
+        speakOut(exerciseList!![currentExercisePostion].getName())
 
         // Set the image of the exercise from the arraylist of exercise
         binding?.imageIV?.setImageResource(exerciseList!![currentExercisePostion].getImage())
@@ -150,6 +186,28 @@ class ExerciseActivity : AppCompatActivity() {
             exerciseTimer?.cancel()
             exerciseProgress = 0
         }
+        if (tts != null){
+            tts?.stop()
+            tts?.shutdown()
+        }
+        if (player != null){
+            player?.stop()
+        }
         binding = null
+    }
+
+    override fun onInit(status: Int) {
+        if (status == TextToSpeech.SUCCESS){
+            val result = tts?.setLanguage(Locale.US)
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED){
+                Log.e("TTS", "Language not supported")
+            }
+        } else {
+            Log.e("TTS", "TTS service not initialize properly")
+        }
+    }
+
+    private fun speakOut(text: String){
+        tts?.speak(text,TextToSpeech.QUEUE_FLUSH, null, "")
     }
 }
