@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.workoutme.databinding.ActivityExerciseBinding
 import org.w3c.dom.Text
 import java.util.*
@@ -31,6 +32,8 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private var exerciseList: ArrayList<ExerciseModel>? = null
     //Intialize the current exercise position and hold it to -1 so that when increment its start from 0
     private var currentExercisePostion = -1
+    //Initialize the adapter
+    private var exerciseAdapter: ExerciseStatusAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +57,19 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         }
 
         setRestView()
+        setUpExerciseStatusRecyclrView()
+    }
+
+    //Create a function for Exercise Status Recycler View
+    private fun setUpExerciseStatusRecyclrView(){
+        //set the LayoutManager for the recyclerView
+        binding?.statusRV?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        //set the adapter
+        exerciseAdapter = ExerciseStatusAdapter(exerciseList!!)
+        //Set the adapter for the recycler view
+        binding?.statusRV?.adapter = exerciseAdapter
+
+
     }
 
     private fun setRestView(){
@@ -132,15 +148,14 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 binding?.progressBar?.progress = 10 - restProgress
                 //set the timerText to totalProgress - restProgress
                 binding?.timerTV?.text = (10 - restProgress).toString()
-
-
-
             }
 
             override fun onFinish() {
                 //increment the current Exercise Transliterator.Position global variable
                 currentExercisePostion++
-
+                //Set the IsSelected to true so that recycler view is working for backgroudn
+                exerciseList!![currentExercisePostion].setIsSelected(true)
+                exerciseAdapter!!.notifyDataSetChanged()
                 setExerciseView()
 
             }
@@ -161,6 +176,9 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             }
 
             override fun onFinish() {
+                exerciseList!![currentExercisePostion].setIsSelected(false)
+                exerciseList!![currentExercisePostion].setIsCompleted(true)
+                exerciseAdapter?.notifyDataSetChanged()
                 // if current exercise position is less than exerciseList size minus 1
                 if (currentExercisePostion < exerciseList!!.size - 1) {
                     //set the rest view
