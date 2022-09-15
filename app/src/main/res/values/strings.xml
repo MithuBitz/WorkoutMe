@@ -2,4 +2,5 @@
     <string name="app_name">WorkoutMe</string>
     <string name="image">image</string>
     <string name="nestExe">Your Upcomeing Exercise:</string>
+    <string name="dialog_msg">This will stop your workout. You are come this far, are you sure you want to quit?</string>
 </resources>

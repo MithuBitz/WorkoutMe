@@ -1,5 +1,6 @@
 package com.example.workoutme
 
+import android.app.Dialog
 import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
@@ -8,10 +9,12 @@ import android.os.CountDownTimer
 import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.workoutme.databinding.ActivityExerciseBinding
+import com.example.workoutme.databinding.DialogCustomBackConfirmationBinding
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -57,11 +60,40 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         tts = TextToSpeech(this, this)
 
         binding?.toolbarExercise?.setNavigationOnClickListener {
-            onBackPressed()
+            customDialogForBackBtn()
         }
 
         setRestView()
         setUpExerciseStatusRecyclrView()
+    }
+
+    override fun onBackPressed() {
+        customDialogForBackBtn()
+        //super.onBackPressed()
+    }
+
+    //Create a funtion to show the dialog
+    private fun customDialogForBackBtn(){
+        //Initaialize the custom Dialog
+        val customDialog = Dialog(this)
+        //Initialize the binding for the custom dialog layout
+        val dialogBinding = DialogCustomBackConfirmationBinding.inflate(layoutInflater)
+        //set the layout for the custom dialog
+        customDialog.setContentView(dialogBinding.root)
+
+        //when click on outside of the dialog nothing happen
+        customDialog.setCanceledOnTouchOutside(false)
+        //When click on yes button close the Exercise Activity and also dismiss the custom dialog
+        dialogBinding.yesBtn.setOnClickListener {
+            this@ExerciseActivity.finish()
+            customDialog.dismiss()
+        }
+        ///when NO btn is pressed close the dialog
+        dialogBinding.noBtn.setOnClickListener {
+            customDialog.dismiss()
+        }
+        //Show the dialog
+        customDialog.show()
     }
 
     //Create a function for Exercise Status Recycler View

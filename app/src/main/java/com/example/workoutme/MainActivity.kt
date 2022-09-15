@@ -25,6 +25,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding?.BmiFL?.setOnClickListener {
+            val intent = Intent(this@MainActivity, BMIActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     override fun onDestroy() {
