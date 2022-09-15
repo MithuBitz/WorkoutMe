@@ -51,20 +51,7 @@ class BMIActivity : AppCompatActivity() {
 
         // Set onClickListenr for the Calculate Btn
         binding?.btnCalculateUnits?.setOnClickListener {
-            //first check if validateMatricUnit is true or false
-            if (validateMetricUnits()) {
-                //If true then
-                //create a variable to hold the weight and height value which is comeing from the EditText
-                val weightValue: Float = binding?.matricUnitWeightET?.text.toString().toFloat()
-                val heightValue: Float = binding?.matricUnitHeightET?.text.toString().toFloat()/100
-
-                val bmi = weightValue / (heightValue * heightValue)
-                //else if its false then Show a Toast
-
-                displayBmiResult(bmi)
-            } else {
-                Toast.makeText(this, "Please input weight and height", Toast.LENGTH_LONG).show()
-            }
+            bmiCalculation()
         }
     }
 
@@ -116,6 +103,46 @@ class BMIActivity : AppCompatActivity() {
 
         return isValid
     }
+
+    private fun validateUsMatricUnit(): Boolean {
+        var isValid = true
+
+        if(binding?.usMatricUnitFeetET?.text.toString().isEmpty()){
+            isValid = false
+        } else if (binding?.etUsMetricUnitHeightInch?.text.toString().isEmpty()){
+            isValid = false
+        } else if(binding?.usMatricUnitWghtET?.text.toString().isEmpty()){
+            isValid = false
+        }
+
+        return isValid
+    }
+
+    private fun bmiCalculation(){
+        //first check if validateMatricUnit is true or false
+        if (validateMetricUnits()) {
+            //If true then
+            //create a variable to hold the weight and height value which is comeing from the EditText
+            val weightValue: Float = binding?.matricUnitWeightET?.text.toString().toFloat()
+            val heightValue: Float = binding?.matricUnitHeightET?.text.toString().toFloat()/100
+
+            val bmiMatric = weightValue / (heightValue * heightValue)
+            //else if its false then Show a Toast
+
+            displayBmiResult(bmiMatric)
+        } else if (validateUsMatricUnit()) {
+            val heightFeetValue: Float = binding?.usMatricUnitFeetET?.text.toString().toFloat()
+            val heightInchValue: Float = binding?.etUsMetricUnitHeightInch?.text.toString().toFloat()
+            val usWeightValue: Float = binding?.usMatricUnitWghtET?.text.toString().toFloat()
+
+            val heightValue = heightFeetValue + heightInchValue * 12
+
+            val bmiUs = 703 * (usWeightValue / (heightValue*heightValue))
+
+            displayBmiResult(bmiUs)
+        }
+    }
+
 
     private fun displayBmiResult(bmi: Float){
 
