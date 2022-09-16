@@ -40,12 +40,12 @@
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/BmiFL"
+        android:id="@+id/bmiFL"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:background="@drawable/item_circular_accent_background"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/historyFL"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/startFL">
 
@@ -60,6 +60,27 @@
 
     </FrameLayout>
 
+    <FrameLayout
+        android:id="@+id/historyFL"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@drawable/item_circular_accent_background"
+        android:layout_marginStart="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/bmiFL"
+        app:layout_constraintTop_toBottomOf="@+id/startFL">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/history_ic"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"/>
+
+
+    </FrameLayout>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -67,9 +88,20 @@
         android:textColor="@color/colorAccent"
         android:textSize="22sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/BmiFL"
-        app:layout_constraintStart_toStartOf="@+id/BmiFL"
-        app:layout_constraintTop_toBottomOf="@+id/BmiFL" />
+        app:layout_constraintEnd_toEndOf="@+id/bmiFL"
+        app:layout_constraintStart_toStartOf="@+id/bmiFL"
+        app:layout_constraintTop_toBottomOf="@+id/bmiFL" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="History"
+        android:textColor="@color/colorAccent"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/historyFL"
+        app:layout_constraintStart_toStartOf="@+id/historyFL"
+        app:layout_constraintTop_toBottomOf="@+id/historyFL" />
 
 
 
